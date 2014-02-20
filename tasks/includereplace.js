@@ -18,6 +18,8 @@ module.exports = function(grunt) {
 		var options = this.options({
 			prefix: '@@',
 			suffix: '',
+			startIf: '_IF_:',
+			endIf: '_ENDIF_',
 			globals: {},
 			includesDir: '',
 			docroot: '.'
@@ -41,6 +43,44 @@ module.exports = function(grunt) {
 
 		// Cached variable regular expressions
 		var globalVarRegExps = {};
+
+		function ifBlocks(contents, localVars) {
+
+			localVars = localVars || {};
+
+			var varNames = Object.keys(localVars);
+			var varRegExps = {};
+
+
+			// Replace local vars
+			varNames.forEach(function(varName) {
+
+				// Process lo-dash templates (for strings) in global variables and JSON.stringify the rest
+				if (_.isString(localVars[varName])) {
+					localVars[varName] = grunt.template.process(localVars[varName]);
+				} else {
+					localVars[varName] = JSON.stringify(localVars[varName]);
+				}
+
+				if (_.isEmpty(localVars[varName]) || localVars[varName] === false) {
+
+					varRegExps[varName] = varRegExps[varName] || new RegExp(options.prefix + options.startIf + varName + options.suffix + '[\\s\\S]*?' + options.prefix + options.endIf + options.suffix, 'g');
+
+					contents = contents.replace(varRegExps[varName], '');
+				}
+
+			});
+
+			// Replace global variables
+			globalVarNames.forEach(function(globalVarName) {
+
+				globalVarRegExps[globalVarName] = globalVarRegExps[globalVarName] || new RegExp(options.prefix + options.startIf + globalVarName + options.suffix + '[\\s\\S]*?' + options.prefix + options.endIf + options.suffix, 'g');
+
+				contents = contents.replace(globalVarRegExps[globalVarName], '');
+			});
+
+			return contents;
+		}
 
 		function replace(contents, localVars) {
 
@@ -115,6 +155,9 @@ module.exports = function(grunt) {
 
 				var includeContents = grunt.file.read(includePath);
 
+				// Remove ifBlocks
+				includeContents = ifBlocks(includeContents, localVars);
+
 				// Make replacements
 				includeContents = replace(includeContents, localVars);
 
@@ -152,6 +195,9 @@ module.exports = function(grunt) {
 
 				grunt.log.debug('Locals', localVars);
 
+				// Remove ifBlocks
+				contents = ifBlocks(contents, localVars);
+
 				// Make replacements
 				contents = replace(contents, localVars);
 
@@ -180,5 +226,3 @@ module.exports = function(grunt) {
 		return grunt.util._.endsWith(dest, '/');
 	}
 };
-
-

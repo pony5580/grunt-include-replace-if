@@ -1,6 +1,6 @@
-# grunt-include-replace [![Build Status](https://travis-ci.org/alanshaw/grunt-include-replace.png)](https://travis-ci.org/alanshaw/grunt-include-replace) [![devDependency Status](https://david-dm.org/alanshaw/grunt-include-replace/dev-status.png)](https://david-dm.org/alanshaw/grunt-include-replace#info=devDependencies)
+# grunt-include-replace-if
 
-> Grunt task to include files and replace variables.
+> Grunt task to include files, replace variables and remove if blocks.
 
 Allows for parameterised file includes:
 
@@ -9,13 +9,16 @@ hello.html
 ```html
 <!DOCTYPE html>
 <h1>Hello World!</h1>
-@@include('/path/to/include/message.html', {"name": "Joe Bloggs"})
+@@include('/path/to/include/message.html', {"name": "Joe Bloggs", "premium": false})
 ```
 
 message.html
 
 ```html
 <p>Hello @@name!</p>
+@@_IF_:premium
+<div>Premium member!</div>
+@@_ENDIF_
 ```
 
 Result:
