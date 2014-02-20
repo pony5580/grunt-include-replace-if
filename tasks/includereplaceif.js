@@ -55,6 +55,8 @@ module.exports = function(grunt) {
 			// Replace local vars
 			varNames.forEach(function(varName) {
 
+				var replaceWith;
+
 				// Process lo-dash templates (for strings) in global variables and JSON.stringify the rest
 				if (_.isString(localVars[varName])) {
 					localVars[varName] = grunt.template.process(localVars[varName]);
@@ -62,21 +64,36 @@ module.exports = function(grunt) {
 					localVars[varName] = JSON.stringify(localVars[varName]);
 				}
 
-				if (_.isEmpty(localVars[varName]) || localVars[varName] === false) {
-
-					varRegExps[varName] = varRegExps[varName] || new RegExp(options.prefix + options.startIf + varName + options.suffix + '[\\s\\S]*?' + options.prefix + options.endIf + options.suffix, 'g');
-
-					contents = contents.replace(varRegExps[varName], '');
+				if (_.isEmpty(localVars[varName]) || localVars[varName] === false || localVars[varName] === 'false') {
+					// remove completely
+					replaceWith = '';
+				} else {
+					// replace with contents
+					replaceWith = '$1';
 				}
+
+				varRegExps[varName] = varRegExps[varName] || new RegExp(options.prefix + options.startIf + varName + options.suffix + '([\\s\\S]*?)' + options.prefix + options.endIf + options.suffix, 'g');
+
+				contents = contents.replace(varRegExps[varName], replaceWith);
 
 			});
 
 			// Replace global variables
 			globalVarNames.forEach(function(globalVarName) {
 
+				var replaceWith;
+
+				if (_.isEmpty(globalVarName) || globalVarName === false || globalVarName === 'false') {
+					// remove completely
+					replaceWith = '';
+				} else {
+					// replace with contents
+					replaceWith = '$1';
+				}
+
 				globalVarRegExps[globalVarName] = globalVarRegExps[globalVarName] || new RegExp(options.prefix + options.startIf + globalVarName + options.suffix + '[\\s\\S]*?' + options.prefix + options.endIf + options.suffix, 'g');
 
-				contents = contents.replace(globalVarRegExps[globalVarName], '');
+				contents = contents.replace(globalVarRegExps[globalVarName], replaceWith);
 			});
 
 			return contents;
