@@ -2,6 +2,14 @@
 
 > Grunt task to include files, replace variables and remove if blocks.
 
+## NOTE!
+
+This is not thoroughly tested or efficient. It was created for a small use-case.
+
+**Take care when using it**
+
+===
+
 Allows for parameterised file includes:
 
 hello.html
