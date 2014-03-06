@@ -83,7 +83,7 @@ module.exports = function(grunt) {
 
 				var replaceWith;
 
-				if (_.isEmpty(globalVarName) || globalVarName === false || globalVarName === 'false') {
+				if (_.isEmpty(globalVars[globalVarName]) || globalVars[globalVarName] === false || globalVars[globalVarName] === 'false') {
 					// remove completely
 					replaceWith = '';
 				} else {
