@@ -4,7 +4,7 @@ module.exports = function(grunt) {
 
 	grunt.initConfig({
 
-		includereplaceif: {
+		includereplaces2: {
 			parameterless: {
 				src: 'parameterless/test.txt',
 				dest: 'dist/',
@@ -205,5 +205,5 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-nodeunit');
 	grunt.loadTasks('tasks');
 
-	grunt.registerTask('default', ['jshint', 'includereplaceif', 'nodeunit']);
+	grunt.registerTask('default', ['jshint', 'includereplaces2', 'nodeunit']);
 };

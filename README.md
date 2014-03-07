@@ -1,4 +1,4 @@
-# grunt-include-replace-if
+# grunt-include-replace-s2
 
 > Grunt task to include files, replace variables and remove if blocks.
 

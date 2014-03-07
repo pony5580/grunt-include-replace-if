@@ -1,6 +1,6 @@
 /*
- * grunt-include-replace-if
- * https://github.com/danielcrisp/grunt-include-replace-if
+ * grunt-include-replace-s2
+ * https://github.com/pony5580/grunt-include-replace-if
  *
  * Copyright (c) 2013 Alan Shaw
  * Licensed under the MIT license.
@@ -13,7 +13,7 @@ module.exports = function(grunt) {
 	var _ = grunt.util._;
 	var path = require('path');
 
-	grunt.registerMultiTask('includereplaceif', 'Include files and replace variables', function() {
+	grunt.registerMultiTask('includereplaces2', 'Include files and replace variables', function() {
 
 		var options = this.options({
 			prefix: '@@',
