@@ -132,7 +132,7 @@ module.exports = function(grunt) {
 				globalVarRegExps[globalVarName] = globalVarRegExps[globalVarName] || new RegExp(options.prefix + globalVarName + options.suffix, 'g');
 
 				if(globalVarName == 'dir'){
-					globalVars[globalVarName] = thisfilesrc;
+					globalVars[globalVarName] = thisfilesrc.replace('/api/system/template/gen','');
 				}
 
 				contents = contents.replace(globalVarRegExps[globalVarName], globalVars[globalVarName]);
