@@ -1,7 +1,7 @@
 {
   "name": "grunt-include-replace-s2",
-  "version": "1.3.3",
-  "description": "Grunt task to include files, replace variables and remove if blocks. Allows for parameterised includes. bug fixed",
+  "version": "1.3.4",
+  "description": "!!!this is ad hoc!!! Grunt task to include files, replace variables and remove if blocks. Allows for parameterised includes. bug fixed",
   "author": "Daniel Crisp - forked from Alan Shaw <alan138@gmail.com>",
   "homepage": "https://github.com/danielcrisp/grunt-include-replace-if",
   "repository": {

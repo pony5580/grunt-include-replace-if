@@ -43,6 +43,9 @@ module.exports = function(grunt) {
 
 		// Cached variable regular expressions
 		var globalVarRegExps = {};
+		var globalIFVarRegExps = {};
+
+		var thisfilesrc = '';
 
 		function ifBlocks(contents, localVars) {
 
@@ -91,9 +94,9 @@ module.exports = function(grunt) {
 					replaceWith = '$1';
 				}
 
-				globalVarRegExps[globalVarName] = globalVarRegExps[globalVarName] || new RegExp(options.prefix + options.startIf + globalVarName + options.suffix + '[\\s\\S]*?' + options.prefix + options.endIf + options.suffix, 'g');
+				globalIFVarRegExps[globalVarName] = globalIFVarRegExps[globalVarName] || new RegExp(options.prefix + options.startIf + globalVarName + options.suffix + '[\\s\\S]*?' + options.prefix + options.endIf + options.suffix, 'g');
 
-				contents = contents.replace(globalVarRegExps[globalVarName], replaceWith);
+				contents = contents.replace(globalIFVarRegExps[globalVarName], replaceWith);
 			});
 
 			return contents;
@@ -121,10 +124,16 @@ module.exports = function(grunt) {
 				contents = contents.replace(varRegExps[varName], localVars[varName]);
 			});
 
+			grunt.log.debug('globalVarNames', globalVarNames);
+
 			// Replace global variables
 			globalVarNames.forEach(function(globalVarName) {
 
 				globalVarRegExps[globalVarName] = globalVarRegExps[globalVarName] || new RegExp(options.prefix + globalVarName + options.suffix, 'g');
+
+				if(globalVarName == 'dir'){
+					globalVars[globalVarName] = thisfilesrc;
+				}
 
 				contents = contents.replace(globalVarRegExps[globalVarName], globalVars[globalVarName]);
 			});
@@ -195,6 +204,8 @@ module.exports = function(grunt) {
 		this.files.forEach(function(config) {
 
 			config.src.forEach(function(src) {
+
+				thisfilesrc = src;
 
 				grunt.log.debug('Processing glob ' + src);
 
